@@ -116,7 +116,7 @@ class FocusedFDL extends AbstractExternalModule
                     $(formactiondivs).width(formactiondivWidth+12);
 
                     $('button.formActionDropdownTrigger').each(module.insertFDLButton);
-                    const tooltipTriggerList = $('a[data-bs-toggle="tooltip"]');
+                    const tooltipTriggerList = $('a.DesignateFDL_view[data-bs-toggle="tooltip"]');
                     const tooltipList = [...tooltipTriggerList].map(triggerEl => new bootstrap.Tooltip(triggerEl, {
                         html: true,
                         sanitize: false,
