@@ -36,14 +36,14 @@ class FocusedFDL extends AbstractExternalModule
         foreach ($fdl_conditions['controls'] as $i => $control) {
             foreach ($control['form-name'] as $frmevt) {
                 list($f,$e) = explode('-', $frmevt, 2);
-                $form_fdl[$f][] = $control['control_id'];
+                if (!in_array($control['control_id'], $form_fdl[$f])) $form_fdl[$f][] = $control['control_id'];
             }
         }
 
         $this->initializeJavascriptModuleObject();
         ?>
         <style type="text/css">
-            #FormDisplayLogicSetupDialog div.data, #deleteAll { display:none !important; }
+            .importantHide { display:none !important; }
         </style>
         <script type="text/javascript">
             // Designate Form Display Logic - FDL buttons for each instrument
@@ -88,8 +88,9 @@ class FocusedFDL extends AbstractExternalModule
                 module.fdlDialogOpen = function() {
                     if (Array.isArray(module.current_form_conditions)) { // launched from form-specific button, not main button?
                         // console.log(module.current_form_conditions);
+                        $('#FormDisplayLogicSetupDialog').find('div:first').hide()
                         $('#FormDisplayLogicSetupDialog div.data').hide();
-                        $('button#deleteAll').hide();
+                        $('#deleteAll').addClass('importantHide');
                         // hide all of the control conditions that are not applicable to the current selected event/form
                         if (module.current_control_count > 0) {
                             $('input[id^=control_id]').each(function(){
@@ -100,8 +101,9 @@ class FocusedFDL extends AbstractExternalModule
                             });
                         }
                     } else {
+                        $('#FormDisplayLogicSetupDialog').find('div:first').show()
                         $('#FormDisplayLogicSetupDialog div.data').show();
-                        $('button#deleteAll').show();
+                        $('#deleteAll').removeClass('importantHide');
                     }
                 };
                 module.init = function() {
@@ -188,7 +190,7 @@ class FocusedFDL extends AbstractExternalModule
         $this->initializeJavascriptModuleObject();
         ?>
         <style type="text/css">
-            #FormDisplayLogicSetupDialog div.data, #deleteAll { display:none !important; }
+            #deleteAll { display:none !important; }
         </style>
         <script type="text/javascript">
             // Designate Form Display Logic
@@ -280,6 +282,7 @@ class FocusedFDL extends AbstractExternalModule
                 };
                 module.fdlDialogOpen = function() {
                     // console.log(module.event_form_conditions);
+                    $('#FormDisplayLogicSetupDialog').find('div:first').hide()
                     $('#FormDisplayLogicSetupDialog div.data').hide();
                     $('button#deleteAll').hide();
                     // hide all of the control conditions that are not applicable to the current selected event/form
